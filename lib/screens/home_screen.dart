@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../app_routes.dart';
 import '../data/country_data.dart';
 import '../models/game_config.dart';
-import '../services/score_service.dart';
 import '../utils/continent_icons.dart';
 import '../utils/formatters.dart';
 import '../widgets/mode_card.dart';
@@ -17,19 +16,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedDuration = 60;
-  final ScoreService _scoreService = ScoreService();
-  List<ScoreEntry> scores = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadScores();
-  }
-
-  Future<void> _loadScores() async {
-    final loadedScores = await _scoreService.getScores();
-    if (mounted) setState(() => scores = loadedScores);
-  }
 
   Future<void> _openGame(GameConfig config) async {
     await Navigator.push(context, AppRoutes.quiz(config));
@@ -130,8 +116,6 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 30),
               _buildHeroCard(),
               const SizedBox(height: 20),
-              _buildRanking(),
-              const SizedBox(height: 20),
               Text('Escolha como jogar',
                   style: Theme.of(context)
                       .textTheme
@@ -190,45 +174,6 @@ class _HomeScreenState extends State<HomeScreen> {
             const Text('bandeiras', style: TextStyle(color: Colors.black54))
           ]),
         ],
-      ),
-    );
-  }
-
-  Widget _buildRanking() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Ranking',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            if (scores.isEmpty)
-              const Text('Ainda não há pontuações. Seja o primeiro!',
-                  style: TextStyle(color: Colors.black54))
-            else
-              ...scores.asMap().entries.map(
-                    (entry) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        children: [
-                          Text('${entry.key + 1}.',
-                              style: const TextStyle(color: Colors.black54)),
-                          const SizedBox(width: 10),
-                          Expanded(child: Text(entry.value.playerName)),
-                          Text('${entry.value.score} pts',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ),
-          ],
-        ),
       ),
     );
   }

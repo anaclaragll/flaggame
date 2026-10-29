@@ -13,7 +13,7 @@ Aplicativo Flutter educativo para testar conhecimentos sobre bandeiras e países
 - Pontuação, total de perguntas e percentual de acertos.
 - Ranking local persistido com `shared_preferences`.
 - Banco de dados local com 194 países organizados por continente.
-- Ranking local com nome do jogador e pontuação, exibido no menu e no resultado.
+- Ranking local com nome do jogador e pontuação, exibido no resultado da partida.
 - Interface responsiva com tema claro e bandeiras em emoji, sem depender de internet ou imagens externas.
 
 ## Como executar
