@@ -116,7 +116,7 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '${controller.answered} respondidas',
-          style: const TextStyle(color: Colors.white54, fontSize: 12),
+          style: const TextStyle(color: Colors.black54, fontSize: 12),
         ),
       ],
     );
@@ -138,14 +138,14 @@ class _QuestionContent extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
-                ?.copyWith(color: Colors.white70),
+                ?.copyWith(color: Colors.black54),
           ),
           const SizedBox(height: 18),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 30),
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1E2B),
+              color: const Color(0xFFF4F2FF),
               borderRadius: BorderRadius.circular(26),
               border: Border.all(color: const Color(0xFF34374B)),
             ),
@@ -158,7 +158,7 @@ class _QuestionContent extends StatelessWidget {
                   'PERGUNTA ${controller.answered + 1}',
                   style: const TextStyle(
                     letterSpacing: 2,
-                    color: Colors.white38,
+                    color: Colors.black45,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),

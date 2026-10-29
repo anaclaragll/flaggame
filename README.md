@@ -12,8 +12,9 @@ Aplicativo Flutter educativo para testar conhecimentos sobre bandeiras e países
 - Feedback visual de acerto/erro.
 - Pontuação, total de perguntas e percentual de acertos.
 - Ranking local persistido com `shared_preferences`.
-- Banco de dados local organizado por continente.
-- Interface responsiva com tema escuro e bandeiras em emoji, sem depender de internet ou imagens externas.
+- Banco de dados local com 194 países organizados por continente.
+- Ranking local com nome do jogador e pontuação, exibido no menu e no resultado.
+- Interface responsiva com tema claro e bandeiras em emoji, sem depender de internet ou imagens externas.
 
 ## Como executar
 
@@ -47,12 +48,12 @@ flutter run -d chrome
 - `lib/main.dart` e `lib/app.dart`: ponto de entrada e configuração global do aplicativo.
 - `lib/models/`: entidades e configurações do domínio.
 - `lib/data/`: banco local de países e continentes.
-- `lib/services/`: persistência do ranking local.
+- `lib/services/`: persistência do ranking local com `shared_preferences`.
 - `lib/screens/`: telas de menu, configuração, quiz e resultado.
 - `lib/widgets/`: componentes reutilizáveis da interface.
 - `lib/utils/`: formatadores e ícones compartilhados.
 - `pubspec.yaml`: dependências e configuração do aplicativo.
-- `test/widget_test.dart`: teste básico de inicialização.
+- `test/widget_test.dart`: teste de inicialização e quantidade de países.
 
 ## Recursos utilizados
 
@@ -64,4 +65,4 @@ flutter run -d chrome
 
 ## Observações
 
-O projeto foi preparado para ser aberto no Android Studio, VS Code ou diretamente no GitHub/CodeSpaces com Flutter instalado. O banco local pode ser ampliado facilmente adicionando novos objetos à lista `countries` em `lib/data/country_data.dart`.
+O projeto foi preparado para ser aberto no Android Studio, VS Code ou diretamente no GitHub/CodeSpaces com Flutter instalado. O banco local contém 194 países na lista `countries` em `lib/data/country_data.dart`. Ao terminar uma partida, informe seu nome para salvar a pontuação no ranking da tela inicial.

@@ -40,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ?.copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             const Text('Escolha o tempo total disponível para cada partida.',
-                style: TextStyle(color: Colors.white60)),
+                style: TextStyle(color: Colors.black54)),
             const SizedBox(height: 28),
             RadioGroup<int>(
               groupValue: selected,
