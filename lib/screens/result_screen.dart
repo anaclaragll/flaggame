@@ -29,17 +29,17 @@ class _ResultScreenState extends State<ResultScreen> {
     _saveScore();
   }
 
-  Future<void> _saveScore() async {//FUNÇÃO QUE SALVA A PONTUAÇÃO DO JOGADOR NO BANCO DE DADOS
-    final savedScores = await _scoreService.saveScore(widget.score);//SALVA A PONTUAÇÃO DO JOGADOR NO BANCO DE DADOS E RETORNA A LISTA DE MELHORES PONTUAÇÕES
-    if (mounted) setState(() => scores = savedScores);//ATUALIZA A LISTA DE MELHORES PONTUAÇÕES NA TELA DE RESULTADOS
+  Future<void> _saveScore() async {
+    final savedScores = await _scoreService.saveScore(widget.score);
+    if (mounted) setState(() => scores = savedScores);
   }
-//2. Como é calculado o percentual de acertos?
+
   @override
-  Widget build(BuildContext context) {//FUNÇÃO QUE CONSTRÓI A TELA DE RESULTADOS DO JOGO
-    final percentage = widget.answered == 0//VERIFICA SE O JOGADOR RESPONDEU ALGUMA PERGUNTA, SE NÃO, A PORCENTAGEM DE ACERTOS É 0, SE SIM, CALCULA A PORCENTAGEM DE ACERTOS
+  Widget build(BuildContext context) {
+    final percentage = widget.answered == 0
         ? 0
-        : ((widget.score / widget.answered) * 100).round();//CALCULA A PORCENTAGEM DE ACERTOS DO JOGADOR
-    return Scaffold(//TELA DE RESULTADOS DO JOGO
+        : ((widget.score / widget.answered) * 100).round();
+    return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -52,13 +52,13 @@ class _ResultScreenState extends State<ResultScreen> {
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.bold)),//EXIBE UMA MENSAGEM DE PARTIDA ENCERRADA
-              const SizedBox(height: 8),//VERIFICA SE O JOGO FOI JOGADO EM MODO ALEATÓRIO OU EM UM CONTINENTE ESPECÍFICO E EXIBE O NOME DO MODO DE JOGO
+                      ?.copyWith(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               Text(
-                  widget.config.continent == null//VERIFICA SE O JOGO FOI JOGADO EM MODO ALEATÓRIO OU EM UM CONTINENTE ESPECÍFICO E EXIBE O NOME DO MODO DE JOGO
-                      ? 'Modo aleatório'//SE SIM, EXIBE "MODO ALEATÓRIO"
-                      : widget.config.continent!,//SE NÃO, EXIBE O NOME DO CONTINENTE ESCOLHIDO
-                  style: const TextStyle(color: Colors.white60)),//
+                  widget.config.continent == null
+                      ? 'Modo aleatório'
+                      : widget.config.continent!,
+                  style: const TextStyle(color: Colors.white60)),
               const SizedBox(height: 28),
               Row(children: [
                 Expanded(

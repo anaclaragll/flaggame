@@ -15,14 +15,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedDuration = 60;//DURAÇÃO DO JOGO EM SEGUNDOS
+  int selectedDuration = 60;
 
   Future<void> _openGame(GameConfig config) async {
-    await Navigator.push(context, AppRoutes.quiz(config));//ABRE A TELA DE JOGO COM A CONFIGURAÇÃO SELECIONADA
+    await Navigator.push(context, AppRoutes.quiz(config));
     if (mounted) setState(() {});
   }
 
-  void _chooseContinent() {//ABRE UM MODAL PARA ESCOLHER O CONTINENTE
+  void _chooseContinent() {
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {//CONSTRUÇÃO DA TELA INICIAL DO JOGO
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('FLAG',//NOME "FLAG GAME" NA TELA INCIAL
+                      Text('FLAG',
                           style: Theme.of(context)
                               .textTheme
                               .labelLarge
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: const Color(0xFFB49CFF))),
                     ],
                   ),
-                  IconButton(//BOTÃO DE CONFIGURAÇÃO DE TEMPO
+                  IconButton(
                     tooltip: 'Configurar tempo',
                     icon: const Icon(Icons.tune_rounded),
                     onPressed: () async {
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       .titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 14),
-              ModeCard(//BOTÃO DE JOGO POR CONTINENTE
+              ModeCard(
                   icon: Icons.public,
                   title: 'Jogar por continente',
                   subtitle: 'Foque em uma região do planeta',
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 22),
               Center(
                   child: Text(
-                      'Tempo atual: ${durationLabel(selectedDuration)}  •  ${countries.length} países disponíveis',//INFORMAÇÕES DE TEMPO E QUANTIDADE DE PAÍSES DISPONÍVEIS
+                      'Tempo atual: ${durationLabel(selectedDuration)}  •  ${countries.length} países disponíveis',
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHeroCard() {//CARTÃO DE APRESENTAÇÃO DO JOGO
+  Widget _buildHeroCard() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
       ),
-      child: Row(//LINHA COM EMOJI E QUANTIDADE DE PAÍSES DISPONÍVEIS
+      child: Row(
         children: [
           const Expanded(
               child: Text('🌍  🗺️  🚩',

@@ -32,7 +32,7 @@ class QuizController extends ChangeNotifier {
     _start();
   }
 
-  double get progress => remaining / config.duration;//progress: porcentagem de tempo restante do jogo.
+  double get progress => remaining / config.duration;
   Country get current => question.answer;
   List<Country> get options => question.options;
   bool get isFinished => _finished;
@@ -54,37 +54,36 @@ class QuizController extends ChangeNotifier {
     remaining--;
     notifyListeners();
   }
-//pool: lista de países disponíveis para o quiz. question: pergunta atual do quiz.
-  void _nextQuestion() {//FUNÇÃO QUE GERA A PRÓXIMA PERGUNTA DO QUIZ
-    if (_pool.isEmpty) _pool = gameService.loadPool(config);//VERIFICA SE O POOL DE PAÍSES ESTÁ VAZIO, SE SIM, CARREGA NOVAMENTE O POOL DE PAÍSES DISPONÍVEIS PARA O QUIZ
-    final answer = _pool.removeLast();//answer: resposta correta.
-    question = gameService.createQuestion(//CRIA UMA NOVA PERGUNTA DO QUIZ COM A RESPOSTA CORRETA E AS ALTERNATIVAS INCORRETAS
-      answer: answer,//answer: resposta correta.
-      allCountries: gameService.countryRepository.findByContinent(null),//allCountries: lista de todos os países disponíveis no repositório de países, sem filtro por continente.
+
+  void _nextQuestion() {
+    if (_pool.isEmpty) _pool = gameService.loadPool(config);
+    final answer = _pool.removeLast();
+    question = gameService.createQuestion(
+      answer: answer,
+      allCountries: gameService.countryRepository.findByContinent(null),
     );
     locked = false;
     selectedAnswer = null;
     wasCorrect = null;
   }
-//. Como o sistema identifica a resposta correta?
-  void answer(Country answer) {//FUNÇÃO QUE É CHAMADA QUANDO O USUÁRIO RESPONDE A PERGUNTA
-    if (locked || remaining == 0 || _finished) return;//VERIFICA SE O JOGO ESTÁ BLOQUEADO, SE O TEMPO ACABOU OU SE O JOGO TERMINOU
-    locked = true;//BLOQUEIA O JOGO PARA QUE O USUÁRIO NÃO POSSA RESPONDER NOVAMENTE
-    selectedAnswer = answer.name;//ARMAZENA O NOME DO PAÍS SELECIONADO PELO USUÁRIO
-    wasCorrect = answer.name == current.name;//VERIFICA SE A RESPOSTA ESTÁ CORRETA
-    answered++;//INCREMENTA O NÚMERO DE PERGUNTAS RESPONDIDAS
-    if (wasCorrect!) score++;//INCREMENTA A PONTUAÇÃO SE A RESPOSTA ESTIVER CORRETA
-    notifyListeners();  //ATUALIZA A TELA COM A NOVA PONTUAÇÃO E O RESULTADO DA RESPOSTA
 
-//8. Como o jogo passa para a próxima pergunta?
-    Future<void>.delayed(const Duration(milliseconds: 650), () {//AGUARDA 650 MILISSEGUNDOS PARA MOSTRAR O RESULTADO DA RESPOSTA ANTES DE PASSAR PARA A PRÓXIMA PERGUNTA
-      if (_finished || remaining == 0) return;//VERIFICA SE O JOGO TERMINOU OU SE O TEMPO ACABOU
-      _nextQuestion();//PASSA PARA A PRÓXIMA PERGUNTA
-      notifyListeners();//ATUALIZA A TELA COM A NOVA PERGUNTA
+  void answer(Country answer) {
+    if (locked || remaining == 0 || _finished) return;
+    locked = true;
+    selectedAnswer = answer.name;
+    wasCorrect = answer.name == current.name;
+    answered++;
+    if (wasCorrect!) score++;
+    notifyListeners();
+
+    Future<void>.delayed(const Duration(milliseconds: 650), () {
+      if (_finished || remaining == 0) return;
+      _nextQuestion();
+      notifyListeners();
     });
   }
 
-  void finish() {//FUNÇÃO QUE É CHAMADA QUANDO O JOGO TERMINA
+  void finish() {
     if (_finished) return;
     _finished = true;
     _timer?.cancel();
@@ -92,7 +91,7 @@ class QuizController extends ChangeNotifier {
   }
 
   @override
-  void dispose() {//FUNÇÃO QUE É CHAMADA QUANDO O QUIZ CONTROLLER É DESCARTADO
+  void dispose() {
     _timer?.cancel();
     super.dispose();
   }

@@ -27,14 +27,14 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  void _finish() {//FUNÇÃO QUE É CHAMADA QUANDO O JOGO TERMINA
-    if (!mounted) return;//VERIFICA SE O WIDGET AINDA ESTÁ MONTADO NA ÁRVORE DE WIDGETS
-    Navigator.pushReplacement(  //SUBSTITUI A TELA ATUAL PELA TELA DE RESULTADOS
-      context,//context: contexto da tela atual
-      AppRoutes.result(//AppRoutes.result: rota para a tela de resultados
-        score: controller.score,//score: pontuação final do jogador
-        answered: controller.answered,//answered: número de perguntas respondidas pelo jogador
-        config: widget.config,//config: configuração do jogo atual
+  void _finish() {
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      AppRoutes.result(
+        score: controller.score,
+        answered: controller.answered,
+        config: widget.config,
       ),
     );
   }
@@ -134,7 +134,7 @@ class _QuestionContent extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Qual país usa esta bandeira?',//PERGUNTA QUE APARECE NA TELA DE QUIZ
+            'Qual país usa esta bandeira?',
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
@@ -151,7 +151,7 @@ class _QuestionContent extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text(controller.current.flag,   //BANDEIRA DO PAÍS QUE APARECE NA TELA DE QUIZ
+                Text(controller.current.flag,
                     style: const TextStyle(fontSize: 92)),
                 const SizedBox(height: 12),
                 Text(
@@ -199,17 +199,17 @@ class _AnswerButton extends StatelessWidget {
   final QuizController controller;
 
   const _AnswerButton({required this.option, required this.controller});
-//7. Como o jogo mostra se o jogador acertou ou errou?
+
   @override
   Widget build(BuildContext context) {
-    final isSelected = controller.selectedAnswer == option.name;//VERIFICA SE A OPÇÃO SELECIONADA PELO USUÁRIO É A MESMA QUE A OPÇÃO ATUAL
-    final isCorrect = option.name == controller.current.name;//VERIFICA SE A OPÇÃO ATUAL É A RESPOSTA CORRETA
-    Color? color;//VARIÁVEL QUE ARMAZENA A COR DO BOTÃO DE RESPOSTA, DEPENDENDO SE A RESPOSTA ESTÁ CORRETA OU INCORRETA
-    if (controller.locked && isCorrect) {   //VERIFICA SE O JOGO ESTÁ BLOQUEADO E SE A OPÇÃO ATUAL É A RESPOSTA CORRETA
-      color = Colors.green.withValues(alpha: .24);//SE SIM, A COR DO BOTÃO É VERDE
+    final isSelected = controller.selectedAnswer == option.name;
+    final isCorrect = option.name == controller.current.name;
+    Color? color;
+    if (controller.locked && isCorrect) {
+      color = Colors.green.withValues(alpha: .24);
     }
-    if (controller.locked && isSelected && !isCorrect) {//VERIFICA SE O JOGO ESTÁ BLOQUEADO, SE A OPÇÃO ATUAL É A OPÇÃO SELECIONADA PELO USUÁRIO E SE NÃO É A RESPOSTA CORRETA
-      color = Colors.red.withValues(alpha: .24);//SE SIM, A COR DO BOTÃO É VERMELHA
+    if (controller.locked && isSelected && !isCorrect) {
+      color = Colors.red.withValues(alpha: .24);
     }
     return Container(
       width: double.infinity,
