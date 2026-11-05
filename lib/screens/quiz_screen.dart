@@ -27,14 +27,14 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  void _finish() {
-    if (!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      AppRoutes.result(
-        score: controller.score,
-        answered: controller.answered,
-        config: widget.config,
+  void _finish() {//FUNÇÃO QUE É CHAMADA QUANDO O JOGO TERMINA
+    if (!mounted) return;//VERIFICA SE O WIDGET AINDA ESTÁ MONTADO NA ÁRVORE DE WIDGETS
+    Navigator.pushReplacement(  //SUBSTITUI A TELA ATUAL PELA TELA DE RESULTADOS
+      context,//context: contexto da tela atual
+      AppRoutes.result(//AppRoutes.result: rota para a tela de resultados
+        score: controller.score,//score: pontuação final do jogador
+        answered: controller.answered,//answered: número de perguntas respondidas pelo jogador
+        config: widget.config,//config: configuração do jogo atual
       ),
     );
   }
@@ -116,7 +116,7 @@ class _ProgressHeader extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '${controller.answered} respondidas',
-          style: const TextStyle(color: Colors.black54, fontSize: 12),
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
         ),
       ],
     );
@@ -134,31 +134,31 @@ class _QuestionContent extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Qual país usa esta bandeira?',
+            'Qual país usa esta bandeira?',//PERGUNTA QUE APARECE NA TELA DE QUIZ
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
-                ?.copyWith(color: Colors.black54),
+                ?.copyWith(color: Colors.white70),
           ),
           const SizedBox(height: 18),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 30),
             decoration: BoxDecoration(
-              color: const Color(0xFFF4F2FF),
+              color: const Color(0xFF1C1E2B),
               borderRadius: BorderRadius.circular(26),
               border: Border.all(color: const Color(0xFF34374B)),
             ),
             child: Column(
               children: [
-                Text(controller.current.flag,
+                Text(controller.current.flag,   //BANDEIRA DO PAÍS QUE APARECE NA TELA DE QUIZ
                     style: const TextStyle(fontSize: 92)),
                 const SizedBox(height: 12),
                 Text(
                   'PERGUNTA ${controller.answered + 1}',
                   style: const TextStyle(
                     letterSpacing: 2,
-                    color: Colors.black45,
+                    color: Colors.white38,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -199,17 +199,17 @@ class _AnswerButton extends StatelessWidget {
   final QuizController controller;
 
   const _AnswerButton({required this.option, required this.controller});
-
+//7. Como o jogo mostra se o jogador acertou ou errou?
   @override
   Widget build(BuildContext context) {
-    final isSelected = controller.selectedAnswer == option.name;
-    final isCorrect = option.name == controller.current.name;
-    Color? color;
-    if (controller.locked && isCorrect) {
-      color = Colors.green.withValues(alpha: .24);
+    final isSelected = controller.selectedAnswer == option.name;//VERIFICA SE A OPÇÃO SELECIONADA PELO USUÁRIO É A MESMA QUE A OPÇÃO ATUAL
+    final isCorrect = option.name == controller.current.name;//VERIFICA SE A OPÇÃO ATUAL É A RESPOSTA CORRETA
+    Color? color;//VARIÁVEL QUE ARMAZENA A COR DO BOTÃO DE RESPOSTA, DEPENDENDO SE A RESPOSTA ESTÁ CORRETA OU INCORRETA
+    if (controller.locked && isCorrect) {   //VERIFICA SE O JOGO ESTÁ BLOQUEADO E SE A OPÇÃO ATUAL É A RESPOSTA CORRETA
+      color = Colors.green.withValues(alpha: .24);//SE SIM, A COR DO BOTÃO É VERDE
     }
-    if (controller.locked && isSelected && !isCorrect) {
-      color = Colors.red.withValues(alpha: .24);
+    if (controller.locked && isSelected && !isCorrect) {//VERIFICA SE O JOGO ESTÁ BLOQUEADO, SE A OPÇÃO ATUAL É A OPÇÃO SELECIONADA PELO USUÁRIO E SE NÃO É A RESPOSTA CORRETA
+      color = Colors.red.withValues(alpha: .24);//SE SIM, A COR DO BOTÃO É VERMELHA
     }
     return Container(
       width: double.infinity,

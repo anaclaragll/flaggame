@@ -11,12 +11,12 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  late int selected;
-  final durations = const [30, 60, 180, 300];
+class _SettingsScreenState extends State<SettingsScreen> {//ESTADO DA TELA DE CONFIGURAÇÃO DE TEMPO
+  late int selected;//TEMPO SELECIONADO PELO USUÁRIO
+  final durations = const [30, 60, 180, 300];//TEMPOS DISPONÍVEIS PARA O JOGO EM SEGUNDOS
 
   @override
-  void initState() {
+  void initState() {//INICIALIZA O TEMPO SELECIONADO COM O VALOR INICIAL PASSADO PELO CONSTRUTOR
     super.initState();
     selected = widget.initial;
   }
@@ -40,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ?.copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             const Text('Escolha o tempo total disponível para cada partida.',
-                style: TextStyle(color: Colors.black54)),
+                style: TextStyle(color: Colors.white60)),
             const SizedBox(height: 28),
             RadioGroup<int>(
               groupValue: selected,
@@ -69,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(
                 width: double.infinity,
                 child: FilledButton.icon(
-                    onPressed: () => Navigator.pop(context, selected),
+                    onPressed: () => Navigator.pop(context, selected),//BOTÃO DE SALVAR CONFIGURAÇÃO DE TEMPO
                     icon: const Icon(Icons.check),
                     label: const Text('Salvar configuração'))),
           ],

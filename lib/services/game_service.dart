@@ -19,16 +19,15 @@ class GameService {
     final pool = countryRepository.findByContinent(config.continent);
     return pool..shuffle(_random);
   }
-
   QuizQuestion createQuestion({
     required Country answer,
     required List<Country> allCountries,
   }) {
     final distractors = allCountries
-        .where((country) => country.name != answer.name)
+        .where((country) => country.name != answer.name)//answer: resposta correta.
         .toList()
       ..shuffle(_random);
-    final options = [answer, ...distractors.take(3)]..shuffle(_random);
-    return QuizQuestion(answer: answer, options: options);
+    final options = [answer, ...distractors.take(3)]..shuffle(_random);//distractors: alternativas incorretas. take(3): seleciona três alternativas incorretas.
+    return QuizQuestion(answer: answer, options: options);//shuffle(): embaralha as quatro opções.
   }
 }

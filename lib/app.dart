@@ -11,15 +11,15 @@ class FlagGameApp extends StatelessWidget {
       title: 'Flag Game',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.light,
+        brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF7C5CFC),
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
         ),
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: const Color(0xFF10111A),
         cardTheme: CardThemeData(
-          color: const Color(0xFFF4F2FF),
+          color: const Color(0xFF1C1E2B),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),

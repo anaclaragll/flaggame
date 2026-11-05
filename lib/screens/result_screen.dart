@@ -9,12 +9,11 @@ class ResultScreen extends StatefulWidget {
   final int answered;
   final GameConfig config;
 
-  const ResultScreen({
-    super.key,
-    required this.score,
-    required this.answered,
-    required this.config,
-  });
+  const ResultScreen(
+      {super.key,
+      required this.score,
+      required this.answered,
+      required this.config});
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
@@ -22,154 +21,107 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> {
   final ScoreService _scoreService = ScoreService();
-  final TextEditingController _nameController = TextEditingController();
-  List<ScoreEntry> scores = [];
-  bool _isSaving = false;
-  bool _saved = false;
+  List<int> scores = [];
 
   @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _saveScore();
   }
 
-  Future<void> _saveScore() async {
-    final name = _nameController.text.trim();
-    if (name.isEmpty || _isSaving) return;
-    setState(() => _isSaving = true);
-    final savedScores = await _scoreService.saveScore(
-      playerName: name,
-      score: widget.score,
-    );
-    if (mounted) {
-      setState(() {
-        scores = savedScores;
-        _isSaving = false;
-        _saved = true;
-      });
-    }
+  Future<void> _saveScore() async {//FUNÇÃO QUE SALVA A PONTUAÇÃO DO JOGADOR NO BANCO DE DADOS
+    final savedScores = await _scoreService.saveScore(widget.score);//SALVA A PONTUAÇÃO DO JOGADOR NO BANCO DE DADOS E RETORNA A LISTA DE MELHORES PONTUAÇÕES
+    if (mounted) setState(() => scores = savedScores);//ATUALIZA A LISTA DE MELHORES PONTUAÇÕES NA TELA DE RESULTADOS
   }
-
+//2. Como é calculado o percentual de acertos?
   @override
-  Widget build(BuildContext context) {
-    final percentage = widget.answered == 0
+  Widget build(BuildContext context) {//FUNÇÃO QUE CONSTRÓI A TELA DE RESULTADOS DO JOGO
+    final percentage = widget.answered == 0//VERIFICA SE O JOGADOR RESPONDEU ALGUMA PERGUNTA, SE NÃO, A PORCENTAGEM DE ACERTOS É 0, SE SIM, CALCULA A PORCENTAGEM DE ACERTOS
         ? 0
-        : ((widget.score / widget.answered) * 100).round();
-    return Scaffold(
+        : ((widget.score / widget.answered) * 100).round();//CALCULA A PORCENTAGEM DE ACERTOS DO JOGADOR
+    return Scaffold(//TELA DE RESULTADOS DO JOGO
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              const SizedBox(height: 32),
+              const Spacer(),
               const Text('🏆', style: TextStyle(fontSize: 70)),
               const SizedBox(height: 14),
               Text('Partida encerrada!',
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
+                      ?.copyWith(fontWeight: FontWeight.bold)),//EXIBE UMA MENSAGEM DE PARTIDA ENCERRADA
+              const SizedBox(height: 8),//VERIFICA SE O JOGO FOI JOGADO EM MODO ALEATÓRIO OU EM UM CONTINENTE ESPECÍFICO E EXIBE O NOME DO MODO DE JOGO
               Text(
-                widget.config.continent == null
-                    ? 'Modo aleatório'
-                    : widget.config.continent!,
-                style: const TextStyle(color: Colors.black54),
-              ),
+                  widget.config.continent == null//VERIFICA SE O JOGO FOI JOGADO EM MODO ALEATÓRIO OU EM UM CONTINENTE ESPECÍFICO E EXIBE O NOME DO MODO DE JOGO
+                      ? 'Modo aleatório'//SE SIM, EXIBE "MODO ALEATÓRIO"
+                      : widget.config.continent!,//SE NÃO, EXIBE O NOME DO CONTINENTE ESCOLHIDO
+                  style: const TextStyle(color: Colors.white60)),//
               const SizedBox(height: 28),
               Row(children: [
                 Expanded(
                     child: _stat('Pontuação', '${widget.score}',
-                        Icons.stars_rounded, const Color(0xFFFF9F00))),
+                        Icons.stars_rounded, const Color(0xFFFFC857))),
                 Expanded(
                     child: _stat('Respondidas', '${widget.answered}',
                         Icons.quiz_rounded, const Color(0xFF6C63FF))),
                 Expanded(
                     child: _stat('Acertos', '$percentage%', Icons.track_changes,
-                        const Color(0xFF159A70))),
+                        const Color(0xFF40D9A2)))
               ]),
-              const SizedBox(height: 24),
-              if (!_saved) ...[
-                TextField(
-                  controller: _nameController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                    labelText: 'Seu nome',
-                    hintText: 'Digite seu nome para entrar no ranking',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person_outline),
+              const SizedBox(height: 28),
+              if (scores.isNotEmpty)
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Melhores pontuações',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        ...scores.asMap().entries.map((entry) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(children: [
+                              Text('${entry.key + 1}.',
+                                  style:
+                                      const TextStyle(color: Colors.white54)),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                  child: Text(entry.key == 0
+                                      ? 'Melhor resultado'
+                                      : 'Partida anterior')),
+                              Text('${entry.value} pts',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold))
+                            ]))),
+                      ],
+                    ),
                   ),
-                  onSubmitted: (_) => _saveScore(),
                 ),
-                const SizedBox(height: 10),
-                SizedBox(
+              const Spacer(),
+              SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
-                    onPressed: _isSaving ? null : _saveScore,
-                    icon: const Icon(Icons.leaderboard_outlined),
-                    label:
-                        Text(_isSaving ? 'Salvando...' : 'Salvar no ranking'),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-              if (_saved)
-                const Text('Pontuação salva no ranking!',
-                    style: TextStyle(
-                        color: Color(0xFF159A70), fontWeight: FontWeight.bold)),
-              if (scores.isNotEmpty) _buildScores(),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: () =>
-                      Navigator.popUntil(context, (route) => route.isFirst),
-                  icon: const Icon(Icons.home_rounded),
-                  label: const Text('Voltar ao menu'),
-                ),
-              ),
+                      onPressed: () =>
+                          Navigator.popUntil(context, (route) => route.isFirst),
+                      icon: const Icon(Icons.home_rounded),
+                      label: const Text('Voltar ao menu'))),
               const SizedBox(height: 10),
               SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => QuizScreen(config: widget.config)),
-                  ),
-                  icon: const Icon(Icons.replay_rounded),
-                  label: const Text('Jogar novamente'),
-                ),
-              ),
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                      onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  QuizScreen(config: widget.config))),
+                      icon: const Icon(Icons.replay_rounded),
+                      label: const Text('Jogar novamente'))),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildScores() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Ranking',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            ...scores.asMap().entries.map((entry) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(children: [
-                    Text('${entry.key + 1}.',
-                        style: const TextStyle(color: Colors.black54)),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(entry.value.playerName)),
-                    Text('${entry.value.score} pts',
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ]),
-                )),
-          ],
         ),
       ),
     );
@@ -188,7 +140,7 @@ class _ResultScreenState extends State<ResultScreen> {
           const SizedBox(height: 2),
           Text(label,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 11, color: Colors.black54)),
+              style: const TextStyle(fontSize: 11, color: Colors.white54))
         ]),
       ),
     );

@@ -15,14 +15,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedDuration = 60;
+  int selectedDuration = 60;//DURAÇÃO DO JOGO EM SEGUNDOS
 
   Future<void> _openGame(GameConfig config) async {
-    await Navigator.push(context, AppRoutes.quiz(config));
+    await Navigator.push(context, AppRoutes.quiz(config));//ABRE A TELA DE JOGO COM A CONFIGURAÇÃO SELECIONADA
     if (mounted) setState(() {});
   }
 
-  void _chooseContinent() {
+  void _chooseContinent() {//ABRE UM MODAL PARA ESCOLHER O CONTINENTE
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//CONSTRUÇÃO DA TELA INICIAL DO JOGO
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -71,12 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('FLAG',
+                      Text('FLAG',//NOME "FLAG GAME" NA TELA INCIAL
                           style: Theme.of(context)
                               .textTheme
                               .labelLarge
                               ?.copyWith(
-                                  letterSpacing: 4, color: Colors.black54)),
+                                  letterSpacing: 4, color: Colors.white70)),
                       Text('GAME',
                           style: Theme.of(context)
                               .textTheme
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: const Color(0xFFB49CFF))),
                     ],
                   ),
-                  IconButton(
+                  IconButton(//BOTÃO DE CONFIGURAÇÃO DE TEMPO
                     tooltip: 'Configurar tempo',
                     icon: const Icon(Icons.tune_rounded),
                     onPressed: () async {
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge
-                      ?.copyWith(color: Colors.black54)),
+                      ?.copyWith(color: Colors.white60)),
               const SizedBox(height: 30),
               _buildHeroCard(),
               const SizedBox(height: 20),
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       .titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 14),
-              ModeCard(
+              ModeCard(//BOTÃO DE JOGO POR CONTINENTE
                   icon: Icons.public,
                   title: 'Jogar por continente',
                   subtitle: 'Foque em uma região do planeta',
@@ -139,11 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 22),
               Center(
                   child: Text(
-                      'Tempo atual: ${durationLabel(selectedDuration)}  •  ${countries.length} países disponíveis',
+                      'Tempo atual: ${durationLabel(selectedDuration)}  •  ${countries.length} países disponíveis',//INFORMAÇÕES DE TEMPO E QUANTIDADE DE PAÍSES DISPONÍVEIS
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall
-                          ?.copyWith(color: Colors.black54))),
+                          ?.copyWith(color: Colors.white54))),
             ],
           ),
         ),
@@ -151,18 +151,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHeroCard() {
+  Widget _buildHeroCard() {//CARTÃO DE APRESENTAÇÃO DO JOGO
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
-            colors: [Color(0xFFEDE9FF), Color(0xFFE4ECFF)],
+            colors: [Color(0xFF272447), Color(0xFF1E243D)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight),
       ),
-      child: Row(
+      child: Row(//LINHA COM EMOJI E QUANTIDADE DE PAÍSES DISPONÍVEIS
         children: [
           const Expanded(
               child: Text('🌍  🗺️  🚩',
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text('${countries.length}',
                 style:
                     const TextStyle(fontSize: 30, fontWeight: FontWeight.w800)),
-            const Text('bandeiras', style: TextStyle(color: Colors.black54))
+            const Text('bandeiras', style: TextStyle(color: Colors.white60))
           ]),
         ],
       ),
